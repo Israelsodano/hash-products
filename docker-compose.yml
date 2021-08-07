@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  hash.products:
+    image: ${DOCKER_REGISTRY-}hashproducts
+    build:
+      context: .
+      dockerfile: src/Hash.Products/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "5000:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  hash.discount:
+    image: hashorg/hash-mock-discount-service
+    ports: 
+      - "50051:50051"
